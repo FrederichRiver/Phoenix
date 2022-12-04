@@ -1,0 +1,12 @@
+@startuml strategy_system_sequence_diagram
+title Strategy System Sequence
+skin rose
+
+participant MySQL
+participant Strategy
+participant Risk_Manager
+participant Order_Center
+participant 
+
+
+@enduml

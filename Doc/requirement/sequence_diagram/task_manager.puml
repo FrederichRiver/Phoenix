@@ -1,0 +1,46 @@
+@startuml task_manager
+title Task Manager
+skin rose
+
+
+participant Task_Manager as Task
+participant Subtask
+
+activate Redis
+
+activate Task
+Task -> Redis: query_module()
+Redis -> Task: module_list{\n"module_name",\n"version"\n}
+
+Task -> Redis: query_task()
+Redis -> Task: task_list{\n"task_name",\n"type"(trigger or interval),\n"interval"(interval time in seconds, 0 trigger, !0 interval)\n}
+
+loop !SHUTDOWN_FLAG
+    opt LIB_UPDATE_FLAG
+        Task -> Redis: query_for_update_lib()
+        Redis -> Task: Library_name
+        Task -> Task: Reload(Library_name)
+    end
+
+    alt count % 1 == 0
+        Task -> Task: Checking task.
+        opt Time_trigger
+            Task -> Subtask: start task.
+            activate Subtask
+            ...After task period...
+            Subtask -> Task: task finished & task_period in seconds
+            deactivate Subtask
+        end
+    else count % 1800 == 0
+        Task -> Redis: Checking task schedule table for update.
+    else count % 3600 == 0
+        Task -> Task: Update libraries.
+    end
+    Task -> Task: sleep(1s) count += 1
+end
+Task -> Task: Task pipline shutdown. No action. TBD
+deactivate Task
+
+deactivate Redis
+
+@enduml

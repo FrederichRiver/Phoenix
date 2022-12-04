@@ -1,0 +1,39 @@
+@startuml System_running_framework
+title System Running Framework
+skin rose
+participant Ubuntu
+participant Daemon
+participant Task
+participant MySQL
+participant Redis
+
+Ubuntu -> Daemon: start
+activate Daemon
+Daemon -> Redis: Start Request.
+Redis -> Daemon: Success signal.
+activate Redis
+Daemon -> MySQL: Start Request.
+MySQL -> Daemon: Success signal.
+activate MySQL
+Daemon -> Task: Start Request.
+activate Task
+deactivate Daemon
+
+Task -> Redis: Task query
+Redis -> Task: Task information
+
+Task -> MySQL: Request
+MySQL -> Task: Data
+
+Ubuntu -> Daemon: shutdown
+activate Daemon
+Daemon -> Redis: shutdown & backup
+Daemon -> MySQL: shutdown & backup
+Daemon -> Task: shutdown
+deactivate Task
+deactivate Redis
+deactivate MySQL
+Daemon -> Ubuntu: SystemExit(0)
+deactivate Daemon
+
+@enduml
