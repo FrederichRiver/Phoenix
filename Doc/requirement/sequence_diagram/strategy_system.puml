@@ -2,11 +2,79 @@
 title Strategy System Sequence
 skin rose
 
-participant MySQL
+
+participant Task_Manager as Task
+participant Transaction as Event
 participant Strategy
-participant Risk_Manager
-participant Order_Center
-participant 
+participant MySQL as DB
+participant Risk_Manager as Risk
+participant Order_Center as Order
+participant settle_Center as Settle
+
+activate Task
+Task -> Event: run_transaction()
+activate Event
+Event -> DB: db = trade\nget_stock_from_pool()
+activate DB
+DB -> Event: stock_list{\n"stock_code",\n "stock_name"\n}
+deactivate DB
+    loop stock_code in stock_list
+        loop SEQ_LEN < 5
+            Event -> Strategy: run_strategy(stock_id)
+            ' 策略模块
+            activate Strategy
+            Strategy -> DB: query_data        
+            activate DB
+            DB -> DB: select_stock_from_pool(pool)
+            DB -> DB: data_clean(pool)
+            DB -> Strategy: data in DataFrame
+            deactivate DB
+
+            ' 风控模块
+            Strategy -> Risk: signal
+            activate Risk
+            Risk -> DB: query_account()
+            activate DB
+            DB -> DB: select_account_info(account_name)
+            DB -> Risk: account data 
+            deactivate DB
+            Risk -> Risk: time_selection
+            Risk -> Risk: cal_position
+            Risk -> Risk: cal_volume_afold
+            Risk -> Order: trade volume
+            deactivate Risk
+            activate Order
+            Order -> Settle: order
+            deactivate Order
+            activate Settle
+            Settle -> DB: order
+            deactivate Settle
+            activate DB
+            DB -> DB: record_order
+            deactivate DB
+            Strategy -> Event: strategy_finished
+            deactivate Strategy
+            Event -> Event: SEQ_LEN -= 1
+        end
+    end
+deactivate DB
+Event -> Task: transaction finished
+deactivate Event
+@enduml
+
+
+@startuml strategy_view_sequence_diagram
+title Strategy View Sequence
+skin rose
+
+participant MySQL as DB
+participant image_engine as Image
+participant Website as Web
+
+Web -> DB: query_data
+DB -> Image: data
+DB -> Web: data
+Image -> Web: image
 
 
 @enduml

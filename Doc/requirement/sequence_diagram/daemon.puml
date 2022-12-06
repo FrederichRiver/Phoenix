@@ -5,13 +5,13 @@ participant Ubuntu
 participant Daemon
 Ubuntu -> Daemon: pid_file\nlog_file
 activate Daemon
-alt os.fork() > 0
+opt os.fork() > 0
     Daemon -> Ubuntu: raise SystemExit(0)
 end
 Daemon -> Daemon: os.chdir('/')
 Daemon -> Daemon: os.umask(0)
 Daemon -> Daemon: os.setsid()
-alt os.fork() > 0
+opt os.fork() > 0
     Daemon -> Ubuntu: raise SystemExit(0)
 end
 Daemon -> Daemon: sys.stdout.flush()
