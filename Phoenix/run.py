@@ -8,11 +8,13 @@ Purpose: Run a python script as a daemon
 Usage:   python3 run.py
 """
 
-
 import os
 import sys
 import atexit
 import signal
+
+PID_FILE = '/tmp/daemon.pid'
+LOG_FILE = '/tmp/daemon.log'
 
 def run(pid_file: str, log_file: str):
     """Run the daemon process"""
@@ -49,8 +51,17 @@ def run(pid_file: str, log_file: str):
     def sigterm_handler(signo, frame):
         raise SystemExit(1)
 
-
-
-# if main
+# Run the main loop
 if __name__ == "__main__":
-    pass
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} start|stop")
+        raise SystemExit(1)
+    if sys.argv[1] == 'start':
+        run(PID_FILE, LOG_FILE)
+    elif sys.argv[1] == 'stop':
+        if os.path.isfile(PID_FILE):
+            with open(PID_FILE) as f:
+                os.kill(int(f.read()), signal.SIGTERM)
+        else:
+            print(f"Not running ({PID_FILE})")
+            raise SystemExit(1)
