@@ -1,4 +1,4 @@
-@startuml daemon_sequence
+@startuml run_seq
 skin rose
 title Daemon sequence
 participant Ubuntu
