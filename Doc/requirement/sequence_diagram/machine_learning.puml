@@ -1,0 +1,27 @@
+@startuml Machine_Learning_Process
+title Machine Learning Process
+
+start
+: Prepare for data;
+: Model initial;
+repeat
+    : model.train();
+    note: model training
+    : output = model.forward(input);
+    : loss = loss_fn(output, target);
+    : optimzer.zero();
+    : loss.backward();
+    : optimizer.step();
+    : calculate train_step;
+repeat while (more data?)
+
+if (train_step == 100) then (yes)
+        : model.val();
+        : model.validation;
+        if (loss is less than valid_loss) then (yes)
+            : model.save();
+        endif
+    endif
+end
+
+@enduml
