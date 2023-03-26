@@ -65,3 +65,6 @@ if __name__ == "__main__":
         else:
             print(f"Not running ({PID_FILE})")
             raise SystemExit(1)
+    elif sys.argv[1] == 'help':
+        print(f"Usage: {sys.argv[0]} start|stop")
+        raise SystemExit(1)
