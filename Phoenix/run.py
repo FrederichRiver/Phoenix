@@ -19,8 +19,17 @@ LOG_FILE = '/tmp/daemon.log'
 def run(pid_file: str, log_file: str):
     """Run the daemon process"""
     # Check for a pid file to see if the daemon already runs
-    if os.path.isfile(pid_file):
-        raise RuntimeError(f"Already running ({pid_file})")
+    if os.path.exists(pid_file):
+        with open(pid_file, 'r') as f:
+            pid = int(f.read())
+        try:
+            # Check if the pid is still running
+            os.kill(pid, 0)
+        except OSError:
+            # Process is not running
+            pass
+        else:
+            raise RuntimeError(f"Already running ({pid_file})")
     # Start the daemon
     if os.fork() > 0:
         raise SystemExit(0)
