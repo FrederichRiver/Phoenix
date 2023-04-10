@@ -1,0 +1,60 @@
+<!-- head of index.html -->
+<head>
+    <title>Geek Fred</title>
+    {% load static %}   
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css'%}" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.65, user-scalable=yes, minimum-scale=0.5, maximum-scale=1.0"/>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+</head>
+<body>
+    <!-- div main_frame -->
+    <div class="main_frame">
+        <!-- generate a table, each row is a strategy -->
+        <table>
+            <th>
+                <td>Strategy</td>
+                <td>Start Date</td>
+                <td>End Date</td>
+                <td>Profit</td>
+                <td>Max Drawdown</td>
+                <td>Sharpe Ratio</td>
+                <td>Beta</td>
+                <td>Alpha</td>
+            </th>
+            {% for strategy in strategy_list %}
+            <tr>
+                <td>
+                    <a href="{% url 'strategy' strategy.url %}" target="_blank">{{ strategy.name }}</a>
+                </td>
+                <td>
+                    {{ strategy.start_date }}
+                </td>
+                <td>
+                    {{ strategy.end_date }}
+                </td>
+                <td>
+                    {{ strategy.profit }}
+                </td>
+                <td>
+                    {{ strategy.max_drawdown }}
+                </td>
+                <td>
+                    {{ strategy.sharpe_ratio }}
+                </td>
+                <td>
+                    {{ strategy.beta }}
+                </td>
+                <td>
+                    {{ strategy.alpha }}
+                </td>
+                <!-- end for -->
+                {% endfor %}
+                <td>
+                    <!-- span to show update date, right align -->
+                    <span style="float:right;">{{ update_date }}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+   

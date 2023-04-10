@@ -1,0 +1,65 @@
+<!-- template for strategy report defined in README.md -->
+<head>
+    <title>Geek Fred</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css'%}" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.65, user-scalable=yes, minimum-scale=0.5, maximum-scale=1.0"/>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+</head>
+<body>
+    <div class="main_frame">
+        <!-- insert a image, name is strategy_value.png -->
+        <img src="strategy_value.png" alt="strategy_value" width="800px" height="100px">
+    </div>
+    <!-- div name main_frame contains a p flag. words in p flag is Strategy description-->
+    <div class="main_frame">
+        <p>Strategy description</p>
+    </div>
+    <div class="main_frame">
+        <!-- insert a table column with no header, with 10 rows and 2 columns, for the first column, row 1 is strategy name, row 2 is strategy author,
+        row 3 is strategy version, row 4 is strategy start date, row 5 is strategy end date, row 6 is strategy status, row 7 is strategy type,
+        row 8 is strategy tags, row 9 is strategy parameters, row 10 is strategy results. For even rows the color is light blue-->
+        <table>
+            <tr class="dark_row">
+                <td>Strategy Name</td>
+                <td>{{strategy_name}}</td>
+            </tr>
+            <tr>
+                <td>Strategy Author</td>
+                <td>{{strategy_author}}</td>
+            </tr>
+            <tr class="dark_row">
+                <td>Strategy Version</td>
+                <td>{{strategy_version}}</td>
+            </tr>
+            <tr>
+                <td>Strategy Start Date</td>
+                <td>{{strategy_start_date}}</td>
+            </tr>
+            <tr class="dark_row">
+                <td>Strategy End Date</td>
+                <td>{{strategy_end_date}}</td>
+            </tr>
+            <tr>
+                <td>Strategy Status</td>
+                <td>{{strategy_status}}</td>
+            </tr>
+            <tr class="dark_row">
+                <td>Strategy Type</td>
+                <td>{{strategy_type}}</td>
+            </tr>
+            <tr>
+                <td>Strategy Tags</td>
+                <td>{{strategy_tags}}</td>
+            </tr>
+            <tr class="dark_row">
+                <td>Strategy Parameters</td>
+                <td>{{strategy_parameters}}</td>
+            </tr>
+            <tr>
+                <td>Strategy Results</td>
+                <td>{{strategy_results}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
