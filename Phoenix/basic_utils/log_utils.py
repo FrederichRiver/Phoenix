@@ -18,6 +18,12 @@ import os
 
 # set log file path using logging.config log file is defined in env_var.py by LOG_FILE
 
+
+# This program creates a log file that is rotated daily.
+# The log file is stored in the same directory as the program.
+# The log file is named 'log.txt'.
+
+
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format=LOG_FORMAT)
 Log = logging.getLogger()
 Log.setLevel(logging.INFO)

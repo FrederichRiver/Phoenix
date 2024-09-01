@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 
+import os
+import re
+import json
+from typing import List, Tuple
+
 # pack files into tar.gz
 # file name like SH000300_20200501.csv
 # select files by date
 # tar file of the same date into one tar.gz
 # move tar.gz to ftp folder
-
-import os
-import re
-from typing import List
-
 
 
 class StockDataFilePack(object):
@@ -69,3 +69,18 @@ class StockDataFilePack(object):
         # remove files in pack_list
         for data_file in pack_list:
             os.system(f"rm {data_file}")
+
+
+def read_json(key: str, js_file: str) -> Tuple:
+    """
+    js_file is a json file.\n
+    return a tuple of key and value.
+    """
+    try:
+        with open(js_file, 'r') as f:
+            result = f.read()
+            j = json.loads(result)
+        item = j[key]
+    except Exception:
+        item = None
+    return key, item

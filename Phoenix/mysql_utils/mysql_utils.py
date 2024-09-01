@@ -31,6 +31,9 @@ class mysqlHeader(object):
     @property
     def charset(self) -> str:
         return self.charset
+    
+    def set_db(self, db: str) -> None:
+        self.db = db
 
 # mysqlMeta is a meta class
 class mysqlMeta(object):
